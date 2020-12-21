@@ -1,42 +1,48 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<title>Glitter</title>
-		<style>
-			body { margin: 0; }
-		</style>
-	</head>
-	<body>
-		<script src="js/three.js"></script>
-		<script>
-			const scene = new THREE.Scene();
-			const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
 
-			const renderer = new THREE.WebGLRenderer();
-			renderer.setSize( window.innerWidth, window.innerHeight );
-            document.body.appendChild( renderer.domElement );
-            
-            var light = new THREE.PointLight( 0xffffff, 1, 10000 );
-                    light.position.set( 0, 0, 0 );
-                    scene.add( light );
+<head>
+    <title>Glitter</title>
+    <style>
+        body {
+            margin: 0;
+        }
+    </style>
+</head>
 
-			const geometry = new THREE.CircleGeometry( 0.1, 32 ) ;
-			const material = new THREE.MeshBasicMaterial( { color: 0x523563  } );
-			const paillette = new THREE.Mesh( geometry, material );
-			scene.add( paillette );
+<body>
+    <script src="js/three.js"></script>
+    <script>
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 
-			camera.position.z = 5;
+        const renderer = new THREE.WebGLRenderer();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
 
-			const animate = function () {
-				requestAnimationFrame( animate );
+        const light = new THREE.AmbientLight(0x404040); 
+        scene.add(light);
 
-				paillette.rotation.x += 0.05;
-				paillette.rotation.y += 0.05;
 
-				renderer.render( scene, camera );
-			};
+        const geometry = new THREE.CircleGeometry(1.1, 32);
+        const material = new THREE.MeshPhongMaterial({ color: 0x523563 });
+        const paillette = new THREE.Mesh(geometry, material);
+        scene.add(paillette);
 
-			animate();
-		</script>
-	</body>
+        camera.position.z = 5;
+
+
+        const animate = function () {
+            requestAnimationFrame(animate);
+
+            paillette.rotation.x += 0.05;
+            paillette.rotation.y += 0.05;
+
+            renderer.render(scene, camera);
+        };
+
+        animate();
+    </script>
+</body>
+
 </html>
