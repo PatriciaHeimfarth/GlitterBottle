@@ -13,35 +13,37 @@
 <body>
     <script src="js/three.js"></script>
     <script>
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        var scene = new THREE.Scene();
+        var frontSpot = new THREE.SpotLight(0xeeeece);
+        frontSpot.position.set(1000, 1000, 1000);
+        scene.add(frontSpot);
+        var frontSpot2 = new THREE.SpotLight(0xddddce);
+        frontSpot2.position.set(-300, -300, -300);
+        scene.add(frontSpot2);
+        var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 
-        const renderer = new THREE.WebGLRenderer();
+        var renderer = new THREE.WebGLRenderer();
         renderer.setSize(window.innerWidth, window.innerHeight);
         document.body.appendChild(renderer.domElement);
 
-        const light = new THREE.AmbientLight(0xffffff); 
-        scene.add(light);
+        var geometry =   new THREE.CircleGeometry(6, 32);
+        var material = new THREE.MeshPhongMaterial({
+            color: 0xdaa520,
+            specular: 0xbcbcbc,
+        });
+        var mesh = new THREE.Mesh(geometry, material);
+        scene.add(mesh);
 
+        camera.position.z = 25;
 
-        const geometry = new THREE.CircleGeometry(0.1, 32);
-        const material = new THREE.MeshPhongMaterial({ color: 0xffff34, shininess:366 });
-        const paillette = new THREE.Mesh(geometry, material);
-        scene.add(paillette);
-
-        camera.position.z = 5;
-
-
-        const animate = function () {
-            requestAnimationFrame(animate);
-
-            paillette.rotation.x += 0.05;
-            paillette.rotation.y += 0.05;
-
+        function render() {
+            requestAnimationFrame(render)
+            mesh.rotation.y += 0.1;
+            mesh.rotation.z += 0.1;
+            mesh.rotation.x += 0.1;
             renderer.render(scene, camera);
-        };
-
-        animate();
+        }
+        render();
     </script>
 </body>
 
