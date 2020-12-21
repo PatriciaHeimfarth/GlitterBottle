@@ -20,12 +20,12 @@
         renderer.setSize(window.innerWidth, window.innerHeight);
         document.body.appendChild(renderer.domElement);
 
-        const light = new THREE.AmbientLight(0x404040); 
+        const light = new THREE.AmbientLight(0xffffff); 
         scene.add(light);
 
 
-        const geometry = new THREE.CircleGeometry(1.1, 32);
-        const material = new THREE.MeshPhongMaterial({ color: 0x523563 });
+        const geometry = new THREE.CircleGeometry(0.1, 32);
+        const material = new THREE.MeshPhongMaterial({ color: 0xffff34, shininess:366 });
         const paillette = new THREE.Mesh(geometry, material);
         scene.add(paillette);
 
