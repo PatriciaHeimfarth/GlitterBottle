@@ -26,31 +26,45 @@
         renderer.setSize(window.innerWidth, window.innerHeight);
         document.body.appendChild(renderer.domElement);
 
-        var geometry =   new THREE.CircleGeometry(1, 32);
+        var geometry = new THREE.CircleGeometry(0.1, 32);
         var material = new THREE.MeshPhongMaterial({
             color: 0x45432,
             specular: 0xbcbcbc,
         });
-        var mesh = new THREE.Mesh(geometry, material);
-        var mesh2 = new THREE.Mesh(geometry, material);
-        mesh2.position.set(10,10,0)
-       
-        scene.add(mesh);
-        scene.add(mesh2);
+
+
+        let pailletteArray = [];
+        for (var k = 0; k < 10; k++) {
+            for (var j = 0; j < 10; j++) {
+                for (var i = 0; i < 10; i++) {
+                    var object = new THREE.Mesh(geometry, material);
+                    object.position.x = i;
+                    object.position.y = j;
+                    object.position.z = k;
+                    pailletteArray.push(object);
+                    scene.add(object);
+                }
+            }
+        }
+        render();
+
         camera.position.z = 25;
 
         function render() {
             requestAnimationFrame(render)
-            mesh.rotation.y += 0.1;
-            mesh.rotation.z += 0.1;
-            mesh.rotation.x += 0.1;
+            for (var u = 0; u < pailletteArray.length; u++) {
+                pailletteArray[u].rotation.x += 0.11;
+                pailletteArray[u].rotation.y += 0.11;
+                pailletteArray[u].rotation.z += 0.11;
 
-            mesh2.rotation.y += 0.2;
-            mesh2.rotation.z += 0.2;
-            mesh2.rotation.x += 0.2;
+                pailletteArray[u].position.x -= 0.01;
+                pailletteArray[u].position.y -= 0.01;
+            }
+
+
             renderer.render(scene, camera);
         }
-        render();
+      
     </script>
 </body>
 
