@@ -27,7 +27,7 @@
         document.body.appendChild(renderer.domElement);
 
 
-        class Paillette extends THREE.Mesh{
+        class Paillette extends THREE.Mesh {
 
             constructor(i, j, k) {
                 super();
@@ -42,6 +42,7 @@
                 this.position.x = i;
                 this.position.y = j;
                 this.position.z = k;
+                this.floatingToLeft = true;
 
             }
 
@@ -49,6 +50,25 @@
                 return Math.floor(Math.random() * 16777215);
             }
 
+            float() {
+                let random = Math.floor(Math.random() * Math.floor(2));
+
+
+                if (random === 0) {
+                    this.position.x -= Math.random() * 0.1;
+                }
+                if (random === 1) {
+                    this.position.y -= Math.random() * 0.03;
+                }
+                if (random === 2) {
+                    this.position.z -= Math.random() * 0.1;
+                }
+
+
+                this.rotation.x += 0.11;
+                this.rotation.y += 0.11;
+                this.rotation.z += 0.11;
+            }
 
         }
 
@@ -70,23 +90,7 @@
         function render() {
             requestAnimationFrame(render)
             for (var u = 0; u < pailletteArray.length; u++) {
-                let random = Math.floor(Math.random() * Math.floor(2));
-
-
-                if (random === 0) {
-                    pailletteArray[u].position.x -= Math.random() * 0.1;
-                }
-                if (random === 1) {
-                    pailletteArray[u].position.y -= Math.random() * 0.03;
-                }
-                if (random === 2) {
-                    pailletteArray[u].position.z -= Math.random() * 0.1;
-                }
-
-
-                pailletteArray[u].rotation.x += 0.11;
-                pailletteArray[u].rotation.y += 0.11;
-                pailletteArray[u].rotation.z += 0.11;
+                pailletteArray[u].float();
             }
 
 
@@ -104,8 +108,11 @@
             frustum.setFromProjectionMatrix(cameraViewProjectionMatrix);
 
 
+            if (frustum.intersectsObject(ob)) {
+                ob.floatingToLeft = false;
+            }
 
-            console.log(frustum.intersectsObject(ob));
+            console.log(ob.floatingToLeft);
         }
 
 
