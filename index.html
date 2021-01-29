@@ -82,9 +82,9 @@
             var ob =  pailletteArray[10];
 
             camera.updateMatrixWorld();  
-            camera.matrixWorldInverse.getInverse(camera.matrixWorld);
+            camera.matrixWorldInverse.copy( camera.matrixWorld ).invert();
             cameraViewProjectionMatrix.multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse);
-            frustum.setFromMatrix(cameraViewProjectionMatrix);
+            frustum.setFromProjectionMatrix(cameraViewProjectionMatrix);
 
             
 
