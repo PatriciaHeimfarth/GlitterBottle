@@ -53,17 +53,30 @@
             float() {
                 let random = Math.floor(Math.random() * Math.floor(2));
 
+                if (this.floatingToLeft) {
 
-                if (random === 0) {
-                    this.position.x -= Math.random() * 0.1;
+                    if (random === 0) {
+                        this.position.x -= Math.random() * 0.1;
+                    }
+                    if (random === 1) {
+                        this.position.y -= Math.random() * 0.03;
+                    }
+                    if (random === 2) {
+                        this.position.z -= Math.random() * 0.1;
+                    }
                 }
-                if (random === 1) {
-                    this.position.y -= Math.random() * 0.03;
-                }
-                if (random === 2) {
-                    this.position.z -= Math.random() * 0.1;
-                }
+                else {
 
+                    if (random === 0) {
+                        this.position.x += Math.random() * 0.1;
+                    }
+                    if (random === 1) {
+                        this.position.y += Math.random() * 0.03;
+                    }
+                    if (random === 2) {
+                        this.position.z += Math.random() * 0.1;
+                    }
+                }
 
                 this.rotation.x += 0.11;
                 this.rotation.y += 0.11;
@@ -76,7 +89,7 @@
         for (var k = 0; k < 100; k = k + 6) {
             for (var j = 0; j < 100; j = j + 9) {
                 for (var i = 0; i < 100; i = i + 4) {
-                    const pa = new Paillette(i, j, k);
+                    const pa = new Paillette(0, j, k);
                     scene.add(pa);
                     pailletteArray.push(pa);
                 }
@@ -88,31 +101,18 @@
         camera.position.z = 25;
 
         function render() {
-            requestAnimationFrame(render)
+            requestAnimationFrame(render);
+
             for (var u = 0; u < pailletteArray.length; u++) {
                 pailletteArray[u].float();
+
+                if (pailletteArray[u].position.x < -5 || pailletteArray[u].position.x > 5) {
+                    pailletteArray[u].floatingToLeft = !pailletteArray[u].floatingToLeft;
+                }
+
             }
-
-
             renderer.render(scene, camera);
 
-
-            var frustum = new THREE.Frustum();
-            var cameraViewProjectionMatrix = new THREE.Matrix4();
-
-            var ob = pailletteArray[10];
-
-            camera.updateMatrixWorld();
-            camera.matrixWorldInverse.copy(camera.matrixWorld).invert();
-            cameraViewProjectionMatrix.multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse);
-            frustum.setFromProjectionMatrix(cameraViewProjectionMatrix);
-
-
-            if (frustum.intersectsObject(ob)) {
-                ob.floatingToLeft = false;
-            }
-
-            console.log(ob.floatingToLeft);
         }
 
 
