@@ -26,30 +26,47 @@
         renderer.setSize(window.innerWidth, window.innerHeight);
         document.body.appendChild(renderer.domElement);
 
-        var geometry = new THREE.CircleGeometry(0.1, 32);
 
-        let pailletteArray = [];
+        class Paillette extends THREE.Mesh{
+
+            constructor(i, j, k) {
+                super();
+                let material = new THREE.MeshPhongMaterial({
+                    color: this.createRandomColor(),
+                    specular: this.createRandomColor(),
+                });
+                let geometry = new THREE.CircleGeometry(0.1, 32);
+
+                this.geometry = geometry;
+                this.material = material;
+                this.position.x = i;
+                this.position.y = j;
+                this.position.z = k;
+
+            }
+
+            createRandomColor() {
+                return Math.floor(Math.random() * 16777215);
+            }
+
+
+        }
+
+        var pailletteArray = [];
         for (var k = 0; k < 100; k = k + 6) {
             for (var j = 0; j < 100; j = j + 9) {
                 for (var i = 0; i < 100; i = i + 4) {
-                    var material = new THREE.MeshPhongMaterial({
-                        color: createRandomColor(),
-                        specular: createRandomColor(),
-                    });
-                    var object = new THREE.Mesh(geometry, material);
-                    object.position.x = i;
-                    object.position.y = j;
-                    object.position.z = k;
-                    pailletteArray.push(object);
-                    scene.add(object);
-
+                    const pa = new Paillette(i, j, k);
+                    scene.add(pa);
+                    pailletteArray.push(pa);
                 }
             }
         }
+
         render();
 
         camera.position.z = 25;
-        
+
         function render() {
             requestAnimationFrame(render)
             for (var u = 0; u < pailletteArray.length; u++) {
@@ -79,21 +96,19 @@
             var frustum = new THREE.Frustum();
             var cameraViewProjectionMatrix = new THREE.Matrix4();
 
-            var ob =  pailletteArray[10];
+            var ob = pailletteArray[10];
 
-            camera.updateMatrixWorld();  
-            camera.matrixWorldInverse.copy( camera.matrixWorld ).invert();
+            camera.updateMatrixWorld();
+            camera.matrixWorldInverse.copy(camera.matrixWorld).invert();
             cameraViewProjectionMatrix.multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse);
             frustum.setFromProjectionMatrix(cameraViewProjectionMatrix);
 
-            
 
-            console.log(frustum.intersectsObject( ob ));
+
+            console.log(frustum.intersectsObject(ob));
         }
 
-        function createRandomColor() {
-            return Math.floor(Math.random() * 16777215);
-        }
+
 
     </script>
 </body>
